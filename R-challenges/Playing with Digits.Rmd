@@ -1,0 +1,94 @@
+---
+title: "CodeWars Kata Template"
+output: html_document
+---
+
+
+# Challenge outline
+
+Some numbers have funny properties. For example:
+
+```
+89 --> 8¹ + 9² = 89 * 1
+
+695 --> 6² + 9³ + 5⁴= 1390 = 695 * 2
+
+46288 --> 4³ + 6⁴+ 2⁵ + 8⁶ + 8⁷ = 2360688 = 46288 * 51
+```
+
+Given a positive integer n written as abcd... (a, b, c, d... being digits) and a positive integer p
+
+we want to find a positive integer k, if it exists, such as the sum of the digits of n taken to the successive powers of p is equal to k * n.
+In other words:
+
+`Is there an integer k such as : (a ^ p + b ^ (p+1) + c ^(p+2) + d ^ (p+3) + ...) = n * k`
+
+If it is the case we will return k, if not return -1.
+
+Note: n and p will always be given as strictly positive integers.
+
+
+## My Final Function (accepted by CodeWars)
+
+```{r}
+
+digPow <- function(n, p) {
+  
+  n_vector <- as.numeric(unlist(strsplit(toString(n), "")))
+  p_vector <- c(p, p + 1:length(n_vector))
+  n_exp_p_vector <- c()
+  
+  for (i in 1:length(n_vector)) {
+    n_exp_p_vector[i] <- n_vector[[i]]^p_vector[[i]]
+  }
+
+  if ((sum(n_exp_p_vector) %% n) == 0) {
+    (sum(n_exp_p_vector) / n)
+  } else {
+    -1
+  }
+  
+}
+
+```
+
+## Sample tests
+
+```{r, message=FALSE}
+library(testthat)
+
+testing <- function(n, p, expect) {
+  cat("n: ", n, " p: ", p, "\n")
+  actual <- digPow(n, p)
+  cat("actual:\n ", actual, "\n")
+  cat("expect:\n ", expect, "\n")
+  expect_equal(actual, expect)
+}
+
+test_that("fixed tests", {
+  testing(89, 1, 1)
+  testing(92, 1, -1)
+  testing(46288, 3, 51)
+  
+})
+
+
+```
+
+
+## Other Solutions I Liked
+
+```{r, eval=FALSE}
+
+
+digPow <- function(n, p) {
+  d <- as.integer(unlist(strsplit(as.character(n), "")))
+  r <- sum(d^(seq(p, length.out = length(d)))) / n
+  ifelse(r %% 1, -1, r)
+}
+
+```
+
+
+This solution did a much better job making use of R's native vectorization (e.g. seq()) than I did with my for loop.
+
