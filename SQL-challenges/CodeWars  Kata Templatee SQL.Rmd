@@ -1,0 +1,43 @@
+---
+title: "CodeWars Kata Template"
+output: html_document
+---
+
+
+# Challenge outline
+
+
+
+
+## My Attempts
+
+```{r, eval=FALSE}
+
+
+```
+
+
+## My Final Function (accepted by CodeWars)
+
+```{r}
+
+```
+
+## Sample tests
+
+```{r, message=FALSE}
+library(testthat)
+
+
+```
+
+
+## Other Solutions I Liked
+
+```{r, eval=FALSE}
+
+
+
+```
+
+

@@ -1,0 +1,43 @@
+---
+title: "CodeWars Kata Template"
+output: html_document
+---
+
+
+# Challenge outline
+
+
+
+
+## My Attempts
+
+```{python, eval=FALSE}
+
+
+```
+
+
+## My Final Function (accepted by CodeWars)
+
+```{python}
+
+```
+
+## Sample tests
+
+```{python, message=FALSE}
+
+
+
+```
+
+
+## Other Solutions I Liked
+
+```{python, eval=FALSE}
+
+
+
+```
+
+

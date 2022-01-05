@@ -1,0 +1,43 @@
+---
+title: "SQL Basics: Simple WHERE and ORDER BY"
+output: html_document
+---
+
+
+# Challenge outline
+
+For this challenge you need to create a simple SELECT statement that will return all columns from the people table WHERE their age is over 50
+people table schema
+
+    id
+    name
+    age
+
+You should return all people fields where their age is over 50 and order by the age descending
+
+
+
+
+## My Final Query (accepted by CodeWars)
+
+```{}
+SELECT id, name, age
+FROM people
+WHERE age>50
+ORDER BY age DESC;
+
+```
+
+
+## Other Solutions I Liked
+
+```{}
+SELECT *
+  FROM people
+  WHERE age > 50
+  ORDER BY age DESC
+
+```
+
+
+People seemed to like the use of indentation, as well as capitalizing the SQL statements, as best practices
