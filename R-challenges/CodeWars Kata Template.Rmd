@@ -1,0 +1,45 @@
+---
+title: "CodeWars Kata Template"
+author: "Pat Callahan"
+date: `r Sys.Date()`
+output: html_document
+---
+
+
+# Challenge outline
+
+
+
+
+## My Attempts
+
+```{r, eval=FALSE}
+
+
+```
+
+
+## My Final Function (accepted by CodeWars)
+
+```{r}
+
+```
+
+## Sample tests
+
+```{r, message=FALSE}
+library(testthat)
+
+
+```
+
+
+## Other Solutions I Liked
+
+```{r, eval=FALSE}
+
+
+
+```
+
+
