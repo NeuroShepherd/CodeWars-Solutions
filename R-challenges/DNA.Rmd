@@ -1,0 +1,112 @@
+---
+title: "DNA"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Challenge outline
+
+Deoxyribonucleic acid (DNA) is a chemical found in the nucleus of cells and carries the "instructions" for the development and functioning of living organisms.
+
+If you want to know more: http://en.wikipedia.org/wiki/DNA
+
+In DNA strings, symbols "A" and "T" are complements of each other, as "C" and "G". You have function with one side of the DNA (string, except for Haskell); you need to get the other complementary side. DNA strand is never empty or there is no DNA at all (again, except for Haskell).
+
+More similar exercise are found here: http://rosalind.info/problems/list-view/ (source)
+
+Example: (input --> output)
+
+```
+"ATTGC" --> "TAACG"
+"GTAT" --> "CATA"
+```
+
+```
+dnaStrand []        `shouldBe` []
+dnaStrand [A,T,G,C] `shouldBe` [T,A,C,G]
+dnaStrand [G,T,A,T] `shouldBe` [C,A,T,A]
+dnaStrand [A,A,A,A] `shouldBe` [T,T,T,T]
+```
+
+## My Attempts
+
+```{r, eval=FALSE}
+
+DNA_strand <- function(dna){
+
+  complement <- {
+    gsub("A", "T", dna)
+    gsub("T", "A", dna)
+    gsub("C", "G", dna)
+    gsub("G", "C", dna)
+  }
+
+  output <- paste("String", dna, "is", complement)
+  return(complement)
+
+}
+
+```
+
+
+## My Final Function (accepted by CodeWars)
+
+```{r}
+DNA_strand <- function(dna){
+  
+  dna_vector <- unlist(strsplit(dna, "")) 
+  
+  for (i in 1:length(dna_vector)) {
+    if (dna_vector[[i]] == "A") {
+      dna_vector[[i]] <- "T"
+    } else if (dna_vector[[i]] == "T") {
+      dna_vector[[i]] <- "A"
+    } else if (dna_vector[[i]] == "G") {
+      dna_vector[[i]] <- "C"
+    } else if (dna_vector[[i]] == "C") {
+      dna_vector[[i]] <- "G"
+    }
+  }
+  
+  complement <- paste(dna_vector, collapse = "")
+  
+  return(complement)
+  
+}
+```
+
+## Sample tests
+
+```{r, message=FALSE}
+library(testthat)
+
+test_that('Basic tests', {
+  expect_equal(DNA_strand("AAAA"),"TTTT","String AAAA is")
+  expect_equal(DNA_strand("ATTGC"),"TAACG","String ATTGC is")
+  expect_equal(DNA_strand("GTAT"),"CATA","String GTAT is")
+  expect_equal(DNA_strand("AAGG"),"TTCC", "String AAGG is")
+  expect_equal(DNA_strand("CGCG"),"GCGC", "String CGCG is")
+  expect_equal(DNA_strand("ATTGC"),"TAACG","String ATTGC is")
+  expect_equal(DNA_strand("GTATCGATCGATCGATCGATTATATTTTCGACGAGATTTAAATATATATATATACGAGAGAATACAGATAGACAGATTA"),"CATAGCTAGCTAGCTAGCTAATATAAAAGCTGCTCTAAATTTATATATATATATGCTCTCTTATGTCTATCTGTCTAAT")
+})
+
+```
+
+
+## Other Solutions I Liked
+
+```{r, eval=FALSE}
+
+DNA_strand <- function(dna){
+  chartr("ACGT", "TGCA", dna)
+}
+
+```
+
+
+The `chartr()` function is exactly what I was looking for at the beginning of this, but I wasn't able to find it! Looping over elements in my for loop was definitely less efficient coding wise and memory wise.
+
+
