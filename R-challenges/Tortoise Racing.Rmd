@@ -1,0 +1,128 @@
+---
+title: "CodeWars Kata Template"
+output: html_document
+---
+
+
+# Challenge outline
+
+Two tortoises named A and B must run a race. A starts with an average speed of 720 feet per hour. Young B knows she runs faster than A, and furthermore has not finished her cabbage.
+
+When she starts, at last, she can see that A has a 70 feet lead but B's speed is 850 feet per hour. How long will it take B to catch A?
+
+More generally: given two speeds v1 (A's speed, integer > 0) and v2 (B's speed, integer > 0) and a lead g (integer > 0) how long will it take B to catch A?
+
+The result will be an array [hour, min, sec] which is the time needed in hours, minutes and seconds (round down to the nearest second) or a string in some languages.
+
+If v1 >= v2 then return nil, nothing, null, None or {-1, -1, -1} for C++, C, Go, Nim, Pascal, [-1, -1, -1] for Perl,[] for Kotlin or "-1 -1 -1".
+
+Examples:
+(form of the result depends on the language)
+
+```
+race(720, 850, 70) => [0, 32, 18] or "0 32 18"
+race(80, 91, 37)   => [3, 21, 49] or "3 21 49"
+```
+
+Note:
+See other examples in "Your test cases".
+
+In Fortran - as in any other language - the returned string is not permitted to contain any redundant trailing whitespace: you can use dynamically allocated character strings.
+
+** Hints for people who don't know how to convert to hours, minutes, seconds:
+
+Tortoises don't care about fractions of seconds
+Think of calculation by hand using only integers (in your code use or simulate integer division)
+or Google: "convert decimal time to hours minutes seconds"
+
+
+## My Attempts
+
+```{r, eval=FALSE}
+race <- function (v1, v2, g) {
+  
+  if (v1 > v2) {
+    return(NULL)
+  }
+  
+  # solve equation
+  # g + v1*t = v2*t
+  # g = t(v2-v1)
+  # g/(v2-v1) = t 
+  
+  time_hours <- g/(v2-v1)
+  
+  c(time_hours %/% 1,
+    floor((time_hours %% 1)*60),
+    floor(((time_hours*60) %% 1)*60)
+  )
+  
+  
+}
+
+```
+
+
+## My Final Function (accepted by CodeWars)
+
+```{r}
+race <- function (v1, v2, g) {
+  
+  if (v1 > v2) {
+    return(NULL)
+  }
+  
+  # solve equation
+  # g + v1*t = v2*t
+  # g = t(v2-v1)
+  # g/(v2-v1) = t 
+  
+  time_hours <- g/(v2-v1)
+  
+  full_hours <- (time_hours*3600) %/% 3600
+  full_minutes <- (((time_hours*3600) - full_hours*3600) %/% 60)
+  full_seconds <- ((time_hours*3600) - full_hours*3600) - full_minutes*60
+  
+
+  c(full_hours, full_minutes, trunc(full_seconds))
+  
+  
+}
+
+```
+
+The first function I wrote pretty much worked, but kept failing 8-10 of the 200 tests that CodeWars was running. Ultimately, this was because the mathematical approach I used was unnecessarily introducing rounding errors with division, and so a handful of the tests were ultimately rounding in the wrong direction. The final product was a more appropriate approach for converting decimal time to hours:minutes:seconds
+
+
+## Sample tests
+
+```{r, message=FALSE}
+library(testthat)
+
+testing <- function(v1, v2, g, expected) {
+  actual <- race(v1, v2, g)
+  expect_equal(actual, expected)
+}
+test_that("tests", {
+  testing(720, 850, 70, c(0, 32, 18))
+  testing(820, 81, 550, NULL)
+})
+```
+
+
+## Other Solutions I Liked
+
+```{r, eval=FALSE}
+
+race <- function (v1, v2, g) {
+    if (v1 < v2){
+        sec <- 3600*g/(v2 - v1)
+        c(sec%/%3600, sec%%3600%/%60, as.integer(sec%%3600%%60))
+    }
+    else { NULL }
+  
+}
+
+```
+
+This person's approach was similar in nature to my initial approach, but it seems they were able to get the modulo operator to give the correct result in the seconds place. However, I tried using functions like `round()` and `trunc()`, but they used `as.integer()` which likely yielded them the correct results
