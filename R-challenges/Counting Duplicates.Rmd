@@ -1,0 +1,66 @@
+---
+title: "CodeWars Kata Template"
+output: html_document
+---
+
+
+# Challenge outline
+
+Count the number of Duplicates
+
+Write a function that will return the count of distinct case-insensitive alphabetic characters and numeric digits that occur more than once in the input string. The input string can be assumed to contain only alphabets (both uppercase and lowercase) and numeric digits.
+Example
+
+- "abcde" -> 0 # no characters repeats more than once
+- "aabbcde" -> 2 # 'a' and 'b'
+- "aabBcde" -> 2 # 'a' occurs twice and 'b' twice (`b` and `B`)
+- "indivisibility" -> 1 # 'i' occurs six times
+- "Indivisibilities" -> 2 # 'i' occurs seven times and 's' occurs twice
+- "aA11" -> 2 # 'a' and '1'
+- "ABBA" -> 2 # 'A' and 'B' each occur twice
+
+
+
+## My Final Function (accepted by CodeWars)
+
+```{r, message=FALSE}
+library(magrittr)
+duplicate_count <- function(text){
+  strsplit(text, "") %>%
+    unlist() %>%
+    tolower() %>%
+    {sum((table(.) > 1))}
+}
+```
+
+## Sample tests
+
+```{r, message=FALSE}
+library(testthat)
+
+test_that("Sample Tests", {
+  expect_equal(duplicate_count(""), 0)
+  expect_equal(duplicate_count("abcdeaa"), 1)
+  expect_equal(duplicate_count("Indivisibilities"), 2)
+})
+```
+
+
+## Other Solutions I Liked
+
+```{r, eval=FALSE}
+duplicate_count <- function(text){
+  text <- factor(unlist(strsplit(casefold(text), "")))
+  sum(summary(text)>1)
+}
+
+duplicate_count <- function(text){
+  return(sum(table(unlist(strsplit(tolower(text), ""))) > 1))
+}
+```
+
+Pretty much all solutions used the same approach and functions (or class of functions) as I used for my solution. I included the first one for the use of `casefold()` which changes all characters to the same case, and is grouped with `tolower()`, `toupper()`, and one of my new favorites, `chartr()`. 
+
+Strictly speaking, I believe my solution should have used `toupper()` as I've read conversations in the past that said that's the better approach to standardizing text. I don't recall the details of this right now so I'll have to dig a bit more on the topic.
+
+I included the second solution simply because it's nice that it came out as a one-liner. I think piping results is still more clear given the one-liner uses 6 wrapped functions.
