@@ -1,0 +1,56 @@
+---
+title: "CodeWars Kata Template"
+output: html_document
+---
+
+
+# Challenge outline
+
+Check to see if a string has the same amount of 'x's and 'o's. The method must return a boolean and be case insensitive. The string can contain any char.
+
+Examples input/output:
+
+```
+XO("ooxx") => true
+XO("xooxx") => false
+XO("ooxXm") => true
+XO("zpzpzpp") => true // when no 'x' and 'o' is present should return true
+XO("zzoo") => false
+```
+
+
+
+## My Final Function (accepted by CodeWars)
+
+```{r}
+xo <- function(s){
+  split_string <- unlist(strsplit(toupper(s), ""))
+  length(which(split_string == "X")) == length(which(split_string == "O"))
+}
+```
+
+## Sample tests
+
+```{r, message=FALSE}
+library(testthat)
+
+test_that("Sample Tests", {
+  expect_equal(xo("xo"), TRUE)
+  expect_equal(xo("xo0"), TRUE)
+  expect_equal(xo("xxxoo"), FALSE)
+})
+```
+
+
+## Other Solutions I Liked
+
+```{r, eval=FALSE}
+
+xo <- function(s){
+  s <- unlist(strsplit(casefold(s), ""))
+  sum(s == "o") == sum(s == "x")
+}
+
+```
+
+This solution is a bit shorter code-wise when it comes to the comparison of the strings, but otherwise shares the same approach!
