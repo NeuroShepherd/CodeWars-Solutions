@@ -1,0 +1,48 @@
+---
+title: "CodeWars Kata Template"
+output: html_document
+---
+
+
+# Challenge outline
+
+Simple, given a string of words, return the length of the shortest word(s).
+
+String will never be empty and you do not need to account for different data types.
+
+
+## My Final Function (accepted by CodeWars)
+
+```{r}
+find_short <- function(s){
+  unlist(strsplit(s, " ")) %>%
+    lapply(function(x) nchar(x)) %>%
+    unlist() %>% min()
+}
+```
+
+## Sample tests
+
+```{r, message=FALSE}
+library(testthat)
+
+test_that("Example Tests", {
+  expect_equal(find_short("bitcoin take over the world maybe who knows perhaps"), 3)
+  expect_equal(find_short("turns out random test cases are easier than writing out basic ones"), 3)
+  expect_equal(find_short("lets talk about javascript the best language"), 3)
+  expect_equal(find_short("i want to travel the world writing code one day"), 1)
+  expect_equal(find_short("Lets all go on holiday somewhere very cold"), 2)
+  expect_equal(find_short("Let's travel abroad shall we"), 2)
+})
+```
+
+
+## Other Solutions I Liked
+
+```{r, eval=FALSE}
+find_short <- function(s){
+  min(nchar(unlist(strsplit(s, " "))))
+}
+```
+
+I didn't realize nchar() would operate on each element of the vector string! Same general approach as my solution then, but efficient in not neeting an apply/map function.
