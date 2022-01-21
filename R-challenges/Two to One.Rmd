@@ -1,0 +1,70 @@
+---
+title: "CodeWars Kata Template"
+output: html_document
+---
+
+
+# Challenge outline
+
+Take 2 strings s1 and s2 including only letters from ato z. Return a new sorted string, the longest possible, containing distinct letters - each taken only once - coming from s1 or s2.
+
+Examples:
+```
+a = "xyaabbbccccdefww"
+b = "xxxxyyyyabklmopq"
+longest(a, b) -> "abcdefklmopqwxy"
+
+a = "abcdefghijklmnopqrstuvwxyz"
+longest(a, a) -> "abcdefghijklmnopqrstuvwxyz"
+```
+
+My notes: the instructions were really unclear on this, and I had to reference the discussion to clarify that I'm supposed to combine arguments s1 and s2 to create the longest possible string of unique characters out of the characters in both strings.
+
+
+## My Final Function (accepted by CodeWars)
+
+```{r}
+library(magrittr)
+longest <- function(s1, s2) {
+  
+  c(unlist(strsplit(s1, "")), unlist(strsplit(s2, ""))) %>%
+    sort() %>% 
+    unique() %>%
+    paste(collapse = "")
+
+}
+```
+
+## Sample tests
+
+```{r, message=FALSE}
+library(testthat)
+
+dotest <- function(s1, s2, expect) {
+  cat("s1: ", s1, "\ns2: ", s2, "\n")
+  actual <- longest(s1, s2)
+  cat("actual:\n ", actual, "\n")
+  cat("expect:\n ", expect, "\n")
+  expect_equal(actual, expect)
+}
+
+test_that("fixed tests", {
+  dotest("aretheyhere", "yestheyarehere", "aehrsty")
+  dotest("loopingisfunbutdangerous", "lessdangerousthancoding", "abcdefghilnoprstu")
+  
+})
+
+```
+
+
+## Other Solutions I Liked
+
+```{r, eval=FALSE}
+
+longest <- function(s1, s2) {
+  paste(sort(union(unlist(strsplit(s1, split="")), unlist(strsplit(s2, split="")))), collapse="")
+}
+
+```
+
+This solution really isn't all that different from mine except for the use of `union()`, but always nice to keep another new function in mind.
