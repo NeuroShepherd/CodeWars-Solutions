@@ -1,0 +1,89 @@
+---
+title: "CodeWars Kata Template"
+output: html_document
+---
+
+
+# Challenge outline
+
+Your task is to sort a given string. Each word in the string will contain a single number. This number is the position the word should have in the result.
+
+Note: Numbers can be from 1 to 9. So 1 will be the first word (not 0).
+
+If the input string is empty, return an empty string. The words in the input String will only contain valid consecutive numbers.
+
+### Examples
+```
+"is2 Thi1s T4est 3a"  -->  "Thi1s is2 3a T4est"
+"4of Fo1r pe6ople g3ood th5e the2"  -->  "Fo1r the2 g3ood 4of th5e pe6ople"
+""  -->  ""
+```
+
+
+## My Attempts
+
+```{r, eval=FALSE}
+
+your_order <- function(sentence) {
+  string <- sentence %>%
+    strsplit(split = " ")
+  
+  index <- string %>%
+    map(~str_remove_all(.x, "[[:alpha:]]") %>% as.numeric()) %>%
+    unlist()
+  
+  string %>%
+    unlist() %>%
+    {.[index]} %>%
+    paste(collapse = " ")
+}
+```
+
+This function worked on the sample given, but this was just a coincidence that the indices matched. Upon submission, my function did not actually work, and I realized that my indexing was just wrong.
+
+## My Final Function (accepted by CodeWars)
+
+```{r}
+library(purrr)
+library(stringr)
+your_order <- function(sentence) {
+  string <- sentence %>% 
+    strsplit(split = " ")
+  
+  index <- string %>%
+    map(~str_remove_all(.x, "[[:alpha:]]") %>% as.numeric()) %>%
+    unlist() 
+  
+  names(index) <- unlist(string)
+  index %>%
+    unlist() %>%
+    sort() %>%
+    names() %>%
+    paste(collapse = " ")
+}
+```
+
+## Sample tests
+
+```{r, message=FALSE}
+library(testthat)
+
+test_that("Example Test", {
+  expect_equal(your_order("is2 Thi1s T4est 3a"), "Thi1s is2 3a T4est")
+})
+```
+
+
+## Other Solutions I Liked
+
+```{r, eval=FALSE}
+
+your_order <- function(s){
+  l <- unlist(strsplit(s, " "))
+  names(l) <- as.numeric(gsub("[[:alpha:]]", "", l))
+  paste(l[order(names(l))], collapse = " ")
+}
+
+```
+
+I think the solution above is, at minimum, a more concise implementation of essentially the same process I did, and avoided using any {tidyverse} functions.
